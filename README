@@ -1,0 +1,22 @@
+NAME
+
+Dancer::Plugin::Bcrypt - Interface to Bcrypt for Dancer
+
+VERSION
+
+version 0.0.1
+
+DESCRIPTION
+
+todo...
+
+AUTHOR
+
+James Aitken <jaitken@cpan.org>
+
+COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by James Aitken.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
