@@ -97,7 +97,7 @@ register_plugin;
 
 =head1 NAME
 
-Dancer::Plugin::Bcrypt - Mojo::Template wrapper for Dancer
+Dancer::Plugin::Bcrypt - Bcrypt interface for Dancer
 
 
 =head1 VERSION
