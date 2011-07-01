@@ -1,5 +1,7 @@
 package Dancer::Plugin::Bcrypt;
 
+# ABSTRACT: Bcrypt interface for Dancer
+
 use strict;
 
 use Dancer::Plugin;
@@ -7,10 +9,6 @@ use Dancer::Config;
 
 use Crypt::Eksblowfish::Bcrypt qw/en_base64/;
 use Crypt::Random::Source;
-
-our $VERSION = '0.0.1';
-
-# See: http://codahale.com/how-to-safely-store-a-password/
 
 
 register bcrypt => sub {
@@ -90,7 +88,125 @@ sub generate_salt {
 }
 
 
-
 register_plugin;
 
 1;
+
+
+=pod
+
+=head1 NAME
+
+Dancer::Plugin::Bcrypt - Mojo::Template wrapper for Dancer
+
+
+=head1 VERSION
+
+version 0.1.0
+
+
+=head1 DESCRIPTION
+
+This plugin is a simple interface to the bcrypt algorithm allowing web apps
+created by dancer to easily store passwords in a secure way.
+
+It generates a crypographically strong salt for each password, uses the
+very strong bcrypts algorithm to hash the password - and does these in a
+configurable and portable manner.
+
+
+=head1 BACKGROUND
+
+See L<http://codahale.com/how-to-safely-store-a-password/>
+
+To safely store passwords in the modern era, you should use bcrypt.
+It's that simple
+
+MD5, SHA and their ilk are general purpose hash functions, designed for speed.
+
+An average server can calculate the MD5 hash of every 6 character, alphanumeric
+password in about 40 seconds. The beefiest boxen can do the same in ONE second
+
+Bcrypt is an adaptive password hashing algorithm. It uses a work factor
+to determine how SLOWLY it hashes a password. This work factor
+can be increased to keep up with the ever increasing power of computers.
+
+
+=head1 KEYWORDS
+
+=head2 bcrypt
+
+The only keyword provided by this plugin.
+
+Pass it a plaintext password, and it will return a string suitable for
+storage, using the settings specified in the app config.
+
+This string contains the bcrypted hash, work factor used, and the salt used
+to generate the hash, delimited by a $.
+
+    my $hash = bcrypt($plaintext);
+
+Pass a plaintext password and a stored bcrypted string, it will return a hash
+of the plaintext password using the work factor and salt from the stored hash.
+
+You would use this to verify that a password provided by a user matches the
+hash you have stored in the database.
+
+    my $hash = bcrypt($plaintext, $stored_hash);
+
+
+=head1 USAGE
+
+    package MyWebService;
+    use Dancer;
+    use Dancer::Plugin::Bcrypt;
+
+    get '/' sub => {
+
+        # Generate a new hashed password - suitable for storing in a DB.
+        my $hash = bcrypt( param('password') );
+
+        # [...]
+
+        # Validate password provided by user against stored hash.
+        my $stored_hash = ''; # [...] retreive password from the DB.
+
+        my $hash = bcrypt(param('password'), $stored_hash);
+
+        if ($hash == $stored_hash) {
+            # Password matched!
+        }
+
+        
+    };
+
+
+=head1 CONFIGURATION
+
+You can set the work factor and the random-ness of the salt in your config.yml
+
+    plugins:
+      bcrypt:
+        work_factor: 8
+        random_factor: strong
+
+
+=head1 SEE ALSO
+
+L<Dancer>, L<Crypt::Eksblowfish::Bcrypt>, L<Crypt::Random::Source>,
+L<http://codahale.com/how-to-safely-store-a-password/>
+
+
+=head1 AUTHOR
+
+James Aitken <jaitken@cpan.org>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2011 by James Aitken.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
