@@ -11,7 +11,7 @@ use Crypt::Eksblowfish::Bcrypt qw/en_base64/;
 use Crypt::Random::Source;
 
 
-register bcrypt => sub {
+sub bcrypt {
     my ($plaintext, $bcrypted) = @_;
 
     return if !$plaintext;
@@ -48,6 +48,17 @@ register bcrypt => sub {
 
 
     return Crypt::Eksblowfish::Bcrypt::bcrypt($plaintext, $new_settings);
+};
+
+register bcrypt => \&bcrypt;
+
+register bcrypt_validate_password => sub {
+    my ($plaintext, $bcrypted) = @_;
+    if ($plaintext && $bcrypted) {
+        return bcrypt($plaintext, $bcrypted) eq $bcrypted;
+    } else {
+        return;
+    }
 };
 
 
@@ -136,8 +147,6 @@ can be increased to keep up with the ever increasing power of computers.
 
 =head2 bcrypt
 
-The only keyword provided by this plugin.
-
 Pass it a plaintext password, and it will return a string suitable for
 storage, using the settings specified in the app config.
 
@@ -153,6 +162,16 @@ You would use this to verify that a password provided by a user matches the
 hash you have stored in the database.
 
     my $hash = bcrypt($plaintext, $stored_hash);
+
+=head1 bcrypt_validate_password
+
+Pass it a plaintext password and the crypted password you have stored, and it
+will return a boolean to indicate whether the plaintext password entered is
+correct (it hashes to the same has the stored hash).
+
+    if (bcrypt_validate_password($entered_password, $stored_hash)) {
+        ...
+    }
 
 
 =head1 USAGE
@@ -170,13 +189,10 @@ hash you have stored in the database.
 
         # Validate password provided by user against stored hash.
         my $stored_hash = ''; # [...] retreive password from the DB.
-
-        my $hash = bcrypt(param('password'), $stored_hash);
-
-        if ($hash == $stored_hash) {
-            # Password matched!
+        
+        if (bcrypt_validate_password(param('password'), $stored_hash)) {
+            # Entered password matches
         }
-
         
     };
 
