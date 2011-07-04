@@ -11,6 +11,10 @@ use Crypt::Eksblowfish::Bcrypt qw/en_base64/;
 use Crypt::Random::Source;
 
 
+register bcrypt => \&bcrypt;
+register bcrypt_validate_password => \&bcrypt_validate_password;
+
+
 sub bcrypt {
     my ($plaintext, $bcrypted) = @_;
 
@@ -50,16 +54,16 @@ sub bcrypt {
     return Crypt::Eksblowfish::Bcrypt::bcrypt($plaintext, $new_settings);
 };
 
-register bcrypt => \&bcrypt;
 
-register bcrypt_validate_password => sub {
+sub bcrypt_validate_password {
     my ($plaintext, $bcrypted) = @_;
+
     if ($plaintext && $bcrypted) {
         return bcrypt($plaintext, $bcrypted) eq $bcrypted;
     } else {
         return;
-    }
-};
+    }    
+}
 
 
 sub sanity_check {
@@ -77,7 +81,7 @@ sub sanity_check {
     };
 
     # Can only specify weak or strong as random_factor
-    unless ( $config->{random_factor} ~~ ['strong', 'weak'] ) {
+    unless ( grep { $_ eq $config->{random_factor} } ('strong', 'weak') ) {
         $config->{random_factor} = 'weak';
     }
 
@@ -93,9 +97,9 @@ sub generate_salt {
 
     if ($type eq 'strong') {
         return Crypt::Random::Source::get_strong(16);
+    } else {
+        return Crypt::Random::Source::get_weak(16);
     }
-
-    return Crypt::Random::Source::get_weak(16);
 }
 
 
