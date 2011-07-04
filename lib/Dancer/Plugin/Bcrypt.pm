@@ -117,7 +117,7 @@ Dancer::Plugin::Bcrypt - Bcrypt interface for Dancer
 
 =head1 VERSION
 
-version 0.1.0
+version 0.2.0
 
 
 =head1 DESCRIPTION
