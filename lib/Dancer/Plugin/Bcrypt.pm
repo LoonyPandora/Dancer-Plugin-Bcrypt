@@ -10,6 +10,8 @@ use Dancer::Config;
 use Crypt::Eksblowfish::Bcrypt qw/en_base64/;
 use Crypt::Random::Source;
 
+our $VERSION = '0.3.0';
+
 
 register bcrypt => \&bcrypt;
 register bcrypt_validate_password => \&bcrypt_validate_password;
@@ -117,7 +119,7 @@ Dancer::Plugin::Bcrypt - Bcrypt interface for Dancer
 
 =head1 VERSION
 
-version 0.2.0
+version 0.3.0
 
 
 =head1 DESCRIPTION
