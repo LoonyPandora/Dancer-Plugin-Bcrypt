@@ -10,7 +10,7 @@ use Dancer::Config;
 use Crypt::Eksblowfish::Bcrypt qw/en_base64/;
 use Crypt::Random::Source;
 
-our $VERSION = '0.3.0';
+our $VERSION = '0.4.0';
 
 
 register bcrypt => \&bcrypt;
@@ -119,10 +119,18 @@ Dancer::Plugin::Bcrypt - Bcrypt interface for Dancer
 
 =head1 VERSION
 
-version 0.3.0
+version 0.4.0
 
 
 =head1 DESCRIPTION
+
+PLEASE NOTE THAT WHILE THIS MODULE WORKS, IT IS DEPRECATED, AND NO LONGER MAINTAINED.
+
+I suggest you use the more flexible replacement L<Dancer::Plugin::Passphrase> - 
+It has all the same functionality as the module, and also allows you to match 
+against other hashing algorithms as well as brcypt.
+
+Original documentation continues below...
 
 This plugin is a simple interface to the bcrypt algorithm allowing web apps
 created by dancer to easily store passwords in a secure way.
@@ -169,7 +177,7 @@ hash you have stored in the database.
 
     my $hash = bcrypt($plaintext, $stored_hash);
 
-=head1 bcrypt_validate_password
+=head2 bcrypt_validate_password
 
 Pass it a plaintext password and the crypted password you have stored, and it
 will return a boolean to indicate whether the plaintext password entered is
