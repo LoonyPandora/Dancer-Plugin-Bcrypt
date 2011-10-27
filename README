@@ -67,7 +67,7 @@ USAGE
         if ($hash == $stored_hash) {
             # Password matched!
         }
-        
+
     };
 
 

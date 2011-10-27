@@ -26,19 +26,19 @@ sub bcrypt {
     my $config = sanity_check();
 
     # On to the actual work...
-    
+
     # If you pass a plaintext password and an bcrypted one (from a DB f.ex)
     # we hash the plaintext password using the same method, salt and
     # work factor as the stored version. If the plaintext password matches
     # the stored version then the resulting hashes should be identical.
-    
+
     if ($bcrypted && $bcrypted =~ /^\$2a\$/) {
         return Crypt::Eksblowfish::Bcrypt::bcrypt($plaintext, $bcrypted);
     }
 
     # If we have been passed only the plaintext, then we
     # generate the bcrypted version with all new settings
-    
+
     # Use bcrypt and append with a NULL - The accepted way to do it
     my $method = '$2a';
 
@@ -64,7 +64,7 @@ sub bcrypt_validate_password {
         return bcrypt($plaintext, $bcrypted) eq $bcrypted;
     } else {
         return;
-    }    
+    }
 }
 
 
@@ -126,8 +126,8 @@ version 0.4.0
 
 PLEASE NOTE THAT WHILE THIS MODULE WORKS, IT IS DEPRECATED, AND NO LONGER MAINTAINED.
 
-I suggest you use the more flexible replacement L<Dancer::Plugin::Passphrase> - 
-It has all the same functionality as the module, and also allows you to match 
+I suggest you use the more flexible replacement L<Dancer::Plugin::Passphrase> -
+It has all the same functionality as the module, and also allows you to match
 against other hashing algorithms as well as brcypt.
 
 Original documentation continues below...
@@ -203,11 +203,11 @@ correct (it hashes to the same has the stored hash).
 
         # Validate password provided by user against stored hash.
         my $stored_hash = ''; # [...] retreive password from the DB.
-        
+
         if (bcrypt_validate_password(param('password'), $stored_hash)) {
             # Entered password matches
         }
-        
+
     };
 
 
