@@ -1,6 +1,6 @@
 package Dancer::Plugin::Bcrypt;
 
-# ABSTRACT: Bcrypt interface for Dancer
+# ABSTRACT: DEPRECATED Bcrypt interface for Dancer
 
 use strict;
 
@@ -10,7 +10,7 @@ use Dancer::Config;
 use Crypt::Eksblowfish::Bcrypt qw/en_base64/;
 use Crypt::Random::Source;
 
-our $VERSION = '0.4.0';
+our $VERSION = '0.4.1';
 
 
 register bcrypt => \&bcrypt;
@@ -114,12 +114,12 @@ register_plugin;
 
 =head1 NAME
 
-Dancer::Plugin::Bcrypt - Bcrypt interface for Dancer
+Dancer::Plugin::Bcrypt - DEPRECATED Bcrypt interface for Dancer
 
 
 =head1 VERSION
 
-version 0.4.0
+version 0.4.1
 
 
 =head1 DESCRIPTION
